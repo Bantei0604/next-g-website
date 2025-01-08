@@ -45,7 +45,7 @@ const Contact = () => {
             Join Next-G Gaming
           </p>
           <AnimatedTitle
-            title="let&#39;s b<b>u</b>ild the <br/> new era of <br/> e-sports"
+            title="let&#39;s b<b>u</b>ild the new era of <br/> e-sports"
             className="special-font !md:text-[6.2rem] w-full font-zentry !text-5xl !font-black !leading-[.9]"
           />
           <Button

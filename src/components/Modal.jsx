@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, email, phone }) => {
               className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md hover:bg-blue-600"
             >
               <img
-                src="/public/img/swordman-partial.webp"
+                src="/public/favicon-32x32.png"
                 alt="Email Icon"
                 className="h-6 w-6"
               />
@@ -48,7 +48,7 @@ const Modal = ({ isOpen, onClose, email, phone }) => {
               className="flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-white shadow-md hover:bg-green-600"
             >
               <img
-                src="/public/img/gallery-2.webp"
+                src="/public/favicon-32x32.png"
                 alt="Phone Icon"
                 className="h-6 w-6"
               />
