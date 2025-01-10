@@ -67,23 +67,18 @@ const Story = () => {
                   onMouseUp={handleMouseLeave}
                   onMouseEnter={handleMouseLeave}
                   onMouseMove={handleMouseMove}
-                  src="/public/img/entrance.webp"
+                  src="img/entrance.webp"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="-mt-80 flex w-full justify-center md:-mt-64 md:me-44 md:justify-end">
+        <div className="-mt-84 flex w-full justify-center md:-mt-64 md:me-44 md:justify-end">
           <div className="flex h-full w-fit flex-col items-center md:items-start">
             <p className="mt-8 max-w-sm text-center font-circular-web text-violet-50 md:text-start">
               Dive into the inspiring journeys of gamers who turned passion into
               victory, one game at a time.
             </p>
-            <Button
-              id="realm-button"
-              title="discover more"
-              containerClass="mt-5"
-            />
           </div>
         </div>
       </div>

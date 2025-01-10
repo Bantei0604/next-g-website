@@ -30,19 +30,25 @@ const About = () => {
           Welcome to our website
         </h2>
         <AnimatedTitle
-          title="Disc<b>o</b>ver the world's l<b>a</b>rgest shared adventure"
+          title="Discover the ultimate <br/> e-sports arena"
           containerClass={`mt-5 !text-black !text-center  `}
         />
 
         <div className="about-subtext">
-          <p>The Game of Game begins-your life, now an epic MMORPG</p>
-          <p>Zentry unites every player from countless games and platform</p>
+          <p>
+            The battle for glory starts here—your journey, now a legendary
+            quest.
+          </p>
+          <p>
+            Next-G brings together gamers from every genre and platform to
+            compete, connect, and conquer.
+          </p>
         </div>
       </div>
       <div className="h-dvh w-screen" id="clip">
         <div className="mask-clip-path about-image">
           <img
-            src="/public/img/about.webp"
+            src="img/about.webp"
             alt="Background"
             className="absolute left-0 top-0 size-full object-cover"
           />
