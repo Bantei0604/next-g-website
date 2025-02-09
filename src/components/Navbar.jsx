@@ -1,57 +1,52 @@
-import React, { useEffect } from "react";
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useWindowScroll } from "react-use";
 import { gsap } from "gsap";
-const navItems = ["Home", "About", "Story", "Contact"];
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+// Register GSAP Plugin
+gsap.registerPlugin(ScrollToPlugin);
+
+const navItems = ["Home", "About", "Gallery", "Contact"];
+
 const Navbar = () => {
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [indicatorActive, setIndicatorActive] = useState(false);
+  const navContainerref = useRef(null);
+  const { y: currentScrollY } = useWindowScroll();
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isNavVisible, setIsNavVisible] = useState(true);
-  const navContainerref = useRef(null);
-  const audioElementRef = useRef(null);
-
-  const { y: currentScrollY } = useWindowScroll();
 
   useEffect(() => {
-    if (currentScrollY === 0) {
-      setIsNavVisible(true);
-      navContainerref.current.classList.remove("floating-nav");
-    } else if (currentScrollY > lastScrollY) {
+    if (currentScrollY > lastScrollY) {
       setIsNavVisible(false);
-      navContainerref.current.classList.add("floating-nav");
-    } else if (currentScrollY < lastScrollY) {
+    } else {
       setIsNavVisible(true);
-      navContainerref.current.classList.add("floating-nav");
     }
-
     setLastScrollY(currentScrollY);
-  }, [currentScrollY, lastScrollY]);
+  }, [currentScrollY]);
 
   useEffect(() => {
     gsap.to(navContainerref.current, {
       y: isNavVisible ? 0 : -100,
       opacity: isNavVisible ? 1 : 0,
-      duration: 0.2,
+      duration: 0.3,
     });
   }, [isNavVisible]);
-  const toggleAudioIndicator = () => {
-    setIndicatorActive((prev) => !prev);
 
-    setIsAudioPlaying((prev) => !prev);
+  // ✅ GSAP Smooth Scroll Function
+  const handleNavClick = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: section,
+        ease: "power2.out",
+      });
+    }
   };
 
-  useEffect(() => {
-    if (isAudioPlaying) {
-      audioElementRef.current.play();
-    } else {
-      audioElementRef.current.pause();
-    }
-  }, [isAudioPlaying]);
   return (
     <div
       ref={navContainerref}
-      className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6"
+      className="fixed inset-x-0 top-4 z-50 h-16 transition-all duration-700"
     >
       <header className="absolute top-1/2 w-full -translate-y-1/2">
         <nav className="flex size-full items-center justify-between p-4">
@@ -63,33 +58,16 @@ const Navbar = () => {
               {navItems.map((item, i) => (
                 <a
                   key={i}
-                  href={`#${item.toLowerCase()}`}
-                  className="nav-hover-btn"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default anchor behavior
+                    handleNavClick(item.toLowerCase());
+                  }}
+                  className="nav-hover-btn cursor-pointer"
                 >
                   {item}
                 </a>
               ))}
             </div>
-            <button
-              className="ml-10 flex items-center space-x-0.5"
-              onClick={toggleAudioIndicator}
-            >
-              <audio
-                ref={audioElementRef}
-                src="audio/loop.mp3"
-                className="hidden"
-                loop
-              />
-              {[1, 2, 3, 4].map((bar, index) => (
-                <div
-                  key={index}
-                  className={`indicator-line ${
-                    indicatorActive ? "active" : ""
-                  }`}
-                  style={{ animationDelay: `${bar * 0.1}s` }}
-                />
-              ))}
-            </button>
           </div>
         </nav>
       </header>

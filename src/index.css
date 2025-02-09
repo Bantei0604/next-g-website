@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,7 +21,7 @@ body {
   font-size: 6.4rem;
 }
 .about-text {
-  font-family: "Bangers", serif;
+  font-family: "League Spartan", serif;
 }
 
 .hero-text {
@@ -92,7 +93,7 @@ body {
   }
 
   .about-image {
-    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl md:w-[30vw];
+    @apply relative mx-auto z-20 h-[60vh] w-96 overflow-hidden rounded-3xl md:w-[30vw];
   }
 
   .animated-title {

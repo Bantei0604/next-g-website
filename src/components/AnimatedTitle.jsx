@@ -25,6 +25,7 @@ const AnimatedTitle = ({ title, containerClass }) => {
 
     return () => ctx.revert();
   }, []);
+
   return (
     <div ref={containerRef} className={`animated-title ${containerClass}`}>
       {title.split("<br/>").map((line, index) => (
@@ -35,7 +36,7 @@ const AnimatedTitle = ({ title, containerClass }) => {
           {line.split(" ").map((word, i) => (
             <span
               key={i}
-              className="animated-word"
+              className="animated-word text-6xl lg:text-7xl md:text-5xl sm:text-3xl"
               dangerouslySetInnerHTML={{ __html: word }}
             />
           ))}

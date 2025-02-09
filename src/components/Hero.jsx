@@ -3,82 +3,55 @@ import { TiLocationArrow } from "react-icons/ti";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Button from "./Button";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
+  const [showVideo, setShowVideo] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [hasClicked, setHasClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadedVideos, setLoadedVideos] = useState(0);
+  const videoRef = useRef(null);
 
-  const totalVideos = 3;
-  const nextVideoRef = useRef(null);
-
-  const upcomingVideoIndex = (currentIndex % totalVideos) + 1;
-
-  const handleVideoLoad = () => {
-    setLoadedVideos((prev) => prev + 1);
-  };
-
-  const handleMiniVidClick = () => {
-    setHasClicked(true);
-    setCurrentIndex(upcomingVideoIndex);
-  };
+  const totalImages = 3; // Total number of images
 
   useEffect(() => {
-    if (loadedVideos === totalVideos - 1) {
-      setIsLoading(false);
-    }
-  }, [loadedVideos]);
-
-  useEffect(() => {
-    if (hasClicked) {
-      gsap.set("#next-video", { visibility: "visible" });
-
-      gsap.to("#next-video", {
-        transformOrigin: "center center",
-        scale: 1,
-        width: "100%",
-        height: "100%",
+    // Toggle video and image every 3 seconds with smooth transition
+    const interval = setInterval(() => {
+      gsap.to("#content", {
+        opacity: 0,
         duration: 1,
-        ease: "power1.inOut",
-        onStart: () => nextVideoRef.current.play(),
+        onComplete: () => {
+          setShowVideo((prev) => !prev);
+          if (!showVideo) {
+            setCurrentIndex((prev) => (prev % totalImages) + 1);
+          }
+        },
       });
 
-      gsap.from("#current-video", {
-        transformOrigin: "center center",
-        scale: 0.5,
-        duration: 1.5,
-        ease: "power1.inOut",
-      });
-    }
-  }, [currentIndex, hasClicked]);
+      gsap.to("#content", { opacity: 1, duration: 1, delay: 1 });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [showVideo]);
 
   useEffect(() => {
-    gsap.set("#video-frame", {
-      clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
-      borderRadius: "0 0 40% 10%",
-    });
+    if (showVideo) {
+      videoRef.current?.play();
+    }
+  }, [showVideo]);
 
-    gsap.from("#video-frame", {
-      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      borderRadius: "0 0 0 0",
-      ease: "power1.inOut",
-      scrollTrigger: {
-        trigger: "#video-frame",
-        start: "center center",
-        end: "bottom center",
-        scrub: true,
-      },
-    });
+  useEffect(() => {
+    // Fake loading effect (2.5s)
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
-  const getVideoSrc = (index) => `/videos/hero-${index}.mp4`;
-
   return (
-    <div className="relative h-dvh w-screen overflow-hidden ">
+    <div id="home" className="relative h-dvh w-screen overflow-hidden bg-black">
+      {/* LOADING SCREEN (Three Dots) */}
       {isLoading && (
-        <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
+        <div className="absolute z-[100] flex h-dvh w-screen items-center justify-center bg-violet-50">
           <div className="three-body">
             <div className="three-body__dot" />
             <div className="three-body__dot" />
@@ -86,54 +59,38 @@ const Hero = () => {
           </div>
         </div>
       )}
+
+      {/* MAIN CONTENT */}
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75 "
+        className="relative z-10 h-dvh w-screen overflow-hidden bg-[rgba(0,0,0, 1)]"
       >
-        <div>
-          <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
-            <div
-              onClick={handleMiniVidClick}
-              className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
-            >
-              <video
-                ref={nextVideoRef}
-                src={getVideoSrc(upcomingVideoIndex)}
-                loop
-                muted
-                id="current-video"
-                className="size-64 origin-center scale-150 object-cover object-center"
-                onLoadedData={handleVideoLoad}
-              />
-            </div>
-          </div>
-          <video
-            ref={nextVideoRef}
-            src={getVideoSrc(currentIndex)}
-            loop
-            muted
-            id="next-video"
-            className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
-          />
-          <video
-            src={getVideoSrc(
-              currentIndex === totalVideos - 1 ? 1 : currentIndex
-            )}
-            autoPlay
-            loop
-            muted
-            preload="auto"
-            className="absolute left-0 top-0 size-full object-cover object-center"
-            onLoadedData={handleVideoLoad}
-          />
+        <div id="content" className="absolute left-0 top-0 size-full">
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              src={`/videos/hero-3.mp4`}
+              autoPlay
+              muted
+              loop
+              className="absolute left-0 top-0 size-full object-cover"
+            />
+          ) : (
+            <img
+              src={`/img/hero-${currentIndex}.jpg`}
+              className="absolute left-0 top-0 size-full object-cover"
+            />
+          )}
         </div>
+
         <h1 className="hero-heading absolute bottom-5 right-5 z-40 text-blue-75">
           G<b>a</b>ming
         </h1>
+
         <div className="absolute top-0 left-0 z-40 size-full">
           <div className="mt-24 px-5 sm:px-10">
-            <h1 className="special-font hero-heading text-blue-100 ">next-G</h1>
-            <p className=" mb-5 max-w-64 font-robert-regular text-blue-100">
+            <h1 className="special-font hero-heading text-blue-100">next-G</h1>
+            <p className="mb-5 max-w-64 font-robert-regular text-blue-100">
               Enter the metagame layer <br /> Unleash the play economy
             </p>
             <Button
@@ -145,9 +102,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <h1 className="special-font hero-heading absolute bottom-5 right-5  text-black">
-        G<b>a</b>ming
-      </h1>
     </div>
   );
 };
